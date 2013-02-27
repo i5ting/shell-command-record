@@ -28,3 +28,12 @@ options：
 - 指定shell类型（bash|zsh|ksh）等
 - 支持ignoreList  比如ls，cd之类的如果不需要就不要
 
+
+## usage:
+
+>    cr start 
+>    cr show
+
+
+
+
