@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 require 'gli'
+require 'hacer'
 
- 
 include GLI::App
  
 program_desc 'shell command recorder'
  
-# flag [:t,:tasklist], :default_value => File.join(ENV['HOME'],'.todolist')
+flag [:t,:tasklist], :default_value => File.join(ENV['HOME'],'.todolist')
  
 pre do |global_options,command,options,args|
   $todo_list = Hacer::Todolist.new(global_options[:tasklist])
@@ -16,6 +16,12 @@ desc 'start record shell commands'
 command :start do |c|
   c.action do |global_options,options,args|
     $todo_list.create(args)
+    
+    p 's'
+    Cr.new.a
+   
+    
+    
   end
 end
 
