@@ -3,4 +3,4 @@ source 'http://ruby.taobao.org'
 # Specify your gem's dependencies in cr.gemspec
 gemspec
 
-gem 'gli'
+gem 'cmdparse'

@@ -1,49 +1,50 @@
 #!/usr/bin/env ruby
-require 'gli'
-require 'hacer'
+require 'cmdparse'
 
-include GLI::App
+require 'cr'
+
  
-program_desc 'shell command recorder'
- 
-flag [:t,:tasklist], :default_value => File.join(ENV['HOME'],'.todolist')
- 
-pre do |global_options,command,options,args|
-  $todo_list = Hacer::Todolist.new(global_options[:tasklist])
-end
- 
-desc 'start record shell commands'
-command :start do |c|
-  c.action do |global_options,options,args|
-    $todo_list.create(args)
-    
-    p 's'
-    Cr.new.a
-   
-    
-    
+
+class NetStatCommand < CmdParse::Command
+
+  def initialize
+    super( 'stat', false )
+    self.short_desc = "Show network statistics"
+    self.description = "This command shows very useful network statistics - eye catching!!!"
   end
-end
 
-
-desc 'show all shell command behind cr start'
-command :show do |c|
-  c.action do
-    $todo_list.list.each do |todo|
-      printf("%5d - %s\n",todo.todo_id,todo.text)
+  def execute( args )
+    
+    puts "Showing network statistics" if $verbose
+    puts
+    puts "Yeah, I will do something now..."
+    puts
+    1.upto(10) do |row|
+      puts " "*(20-row) + "#"*(row*2 - 1)
     end
+    puts
   end
+
 end
- 
-# command :done do |c|
-#   c.action do |global_options,options,args|
-#     id = args.shift.to_i
-#     $todo_list.list.each do |todo|
-#       $todo_list.complete(todo) if todo.todo_id == id
-#     end
-#   end
-# end
 
 
- 
-exit run(ARGV)
+cmd = CmdParse::CommandParser.new( true, true )
+cmd.program_name = "cr -shell command record"
+cmd.program_version = [0, 1, 1]
+cmd.options = CmdParse::OptionParserWrapper.new do |opt|
+  opt.separator "Global options:"
+  opt.on("--verbose", "Be verbose when outputting info") {|t| $verbose = true }
+end
+# 
+cmd.add_command( CmdParse::HelpCommand.new )
+# cmd.add_command( CmdParse::VersionCommand.new )
+
+
+
+
+Cr.init(cmd)
+
+
+cmd.parse
+
+
